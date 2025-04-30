@@ -1,0 +1,106 @@
+body {
+    font-family: sans-serif;
+    background-color: #f0f0f0; /* Cinza claro para o fundo da página */
+    display: flex;
+    justify-content: center; /* Alinha o container horizontalmente */
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    width: 90%; /* Ajuste a largura conforme necessário */
+    max-width: 1200px; /* Largura máxima do container */
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(245, 243, 243, 0.014);
+    overflow: hidden; /* Garante que os elementos internos não vazem a borda */
+}
+
+.left-side {
+    background-color: #3e6fca; /* Azul mais escuro para a lateral esquerda */
+    background: linear-gradient(to right,#3e6fca,#083b6e);
+    color: #ecf0f1; /* Cinza claro para o texto da lateral esquerda */
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%; /* Ocupa metade da largura do container */
+    text-align: center;
+}
+
+.left-side h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+.login-container {
+    background-color: #083b6e; /* Azul escuro para o container de login */
+    padding: 40px;
+    width: 50%; /* Ocupa metade da largura do container */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Alinha o conteúdo verticalmente */
+}
+
+.login-header h2 {
+    color: #ecf0f1; /* Cinza claro para o título */
+    margin-bottom: 30px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    color: #ecf0f1; /* Cinza claro para os labels */
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="password"] {
+    width: calc(100%); /* Garante o mesmo tamanho */
+    padding: 10px;
+    display: flex;    
+    border: 1px solid #7f8c8d; /* Cinza médio para a borda dos inputs */
+    border-radius: 5px;
+    background-color: #d7dbdf; /* Azul mais escuro para o fundo dos inputs */
+    color: #ecf0f1; /* Cinza claro para o texto dentro dos inputs */
+    box-sizing: border-box;
+}
+
+.login-button {
+    background-color: #3c6ffc; /* Azul vibrante para o botão */
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.login-button:hover {
+    background-color: #3e6fca; /* Azul um pouco mais escuro no hover */
+}
+
+.links a {
+    color: #bdc3c7; /* Cinza médio para os links */
+    text-decoration: none;
+    font-size: 14px;
+    margin: 0 10px;
+}
+
+.links a:hover {
+    color: #fff;
+}

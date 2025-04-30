@@ -25,14 +25,32 @@ session_start();
     <link href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css" rel="stylesheet">
 </head>
 <body>   
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar  navbar-expand-lg navbar-dark" style="background-color: #083b6e;">
       <div class="container-fluid">
-        <a class="navbar-brand" href="principal.php">Sistema de Controle de Estoque</a>
+        <a class="navbar-brand" href="principal.php">Sistema de Gerenciamento de Projetos 1.0</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <div class="d-flex">
+          <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cadastro</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="clientes.php">Clientes</a></li>
+                <li><a class="dropdown-item" href="membros.php">Membros</a></li>
+                <li><a class="dropdown-item" href="projetos.php">Projetos</a></li>
+                <li><a class="dropdown-item" href="tarefas.php">Tarefas</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="atividades.php">Atividades</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="produtos.php">Produtos</a>
             </li>
