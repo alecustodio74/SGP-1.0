@@ -1,0 +1,307 @@
+/* Estrutura Inicial do Sistema de Gestão de Projetos */
+
+**Estrutura de Arquivos:**
+
+```
+projeto-gestao/
+|-- index.php            (Página inicial)
+|-- style.css            (Folha de estilo CSS)
+|-- conexao.php          (Conexão com o banco de dados MySQL)
+|-- projetos.php         (Cadastro de projetos)
+|-- membros.php          (Cadastro de membros)
+|-- tarefas.php          (Cadastro de tarefas)
+|-- atividades.php       (Registro de atividades)
+|-- /assets              (Pasta com imagens e outros arquivos)
+|-- /scripts             (Pasta com scripts auxiliares)
+```
+
+
+**Exemplo de `conexao.php`:**
+
+```php
+<?php
+$host = 'localhost';
+$dbname = 'gestao_projetos';
+$user = 'root';
+$password = '';
+
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Conexão bem-sucedida!";
+} catch (PDOException $e) {
+    echo "Erro na conexão: " . $e->getMessage();
+}
+?>
+```
+
+---
+
+**Banco de Dados MySQL (Estrutura Inicial):**
+
+```sql
+CREATE DATABASE gestao_projetos;
+USE gestao_projetos;
+
+CREATE TABLE projetos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    data_inicio DATE,
+    data_fim DATE
+);
+
+CREATE TABLE membros (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100),
+    cargo VARCHAR(50)
+);
+
+CREATE TABLE tarefas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    status VARCHAR(50),
+    data_inicio DATE,
+    data_fim DATE,
+    id_projeto INT,
+    FOREIGN KEY (id_projeto) REFERENCES projetos(id)
+);
+
+CREATE TABLE atividades (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    descricao TEXT,
+    data_inicio DATE,
+    data_fim DATE,
+    id_membro INT,
+    id_tarefa INT,
+    FOREIGN KEY (id_membro) REFERENCES membros(id),
+    FOREIGN KEY (id_tarefa) REFERENCES tarefas(id)
+);
+```
+
+---
+
+**Exemplo de Formulário para Cadastro de Projetos (em `projetos.php`):**
+
+```html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Projetos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Cadastro de Projetos</h1>
+    <form action="projetos.php" method="POST">
+        <label for="nome">Nome do Projeto:</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="descricao"></textarea>
+
+        <label for="data_inicio">Data de Início:</label>
+        <input type="date" id="data_inicio" name="data_inicio" required>
+
+        <label for="data_fim">Data de Término:</label>
+        <input type="date" id="data_fim" name="data_fim">
+
+        <button type="submit">Cadastrar Projeto</button>
+    </form>
+
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        require 'conexao.php';
+
+        $nome = $_POST['nome'];
+        $descricao = $_POST['descricao'];
+        $data_inicio = $_POST['data_inicio'];
+        $data_fim = $_POST['data_fim'];
+
+        $sql = "INSERT INTO projetos (nome, descricao, data_inicio, data_fim) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$nome, $descricao, $data_inicio, $data_fim]);
+
+        echo "Projeto cadastrado com sucesso!";
+    }
+    ?>
+</body>
+</html>
+```
+
+---
+
+**Exemplo de Formulário para Cadastro de Membros (em `membros.php`):**
+
+```html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Membros</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Cadastro de Membros</h1>
+    <form action="membros.php" method="POST">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+
+        <label for="cargo">Cargo:</label>
+        <input type="text" id="cargo" name="cargo">
+
+        <button type="submit">Cadastrar Membro</button>
+    </form>
+
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        require 'conexao.php';
+
+        $nome = $_POST['nome'];
+        $email = $_POST['email'];
+        $cargo = $_POST['cargo'];
+
+        $sql = "INSERT INTO membros (nome, email, cargo) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$nome, $email, $cargo]);
+
+        echo "Membro cadastrado com sucesso!";
+    }
+    ?>
+</body>
+</html>
+```
+
+---
+
+**Exemplo de Formulário para Cadastro de Tarefas (em `tarefas.php`):**
+
+```html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Tarefas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Cadastro de Tarefas</h1>
+    <form action="tarefas.php" method="POST">
+        <label for="titulo">Título da Tarefa:</label>
+        <input type="text" id="titulo" name="titulo" required>
+
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="descricao"></textarea>
+
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option value="Pendente">Pendente</option>
+            <option value="Em andamento">Em andamento</option>
+            <option value="Concluído">Concluído</option>
+        </select>
+
+        <label for="data_inicio">Data de Início:</label>
+        <input type="date" id="data_inicio" name="data_inicio" required>
+
+        <label for="data_fim">Data de Término:</label>
+        <input type="date" id="data_fim" name="data_fim">
+
+        <button type="submit">Cadastrar Tarefa</button>
+    </form>
+
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        require 'conexao.php';
+
+        $titulo = $_POST['titulo'];
+        $descricao = $_POST['descricao'];
+        $status = $_POST['status'];
+        $data_inicio = $_POST['data_inicio'];
+        $data_fim = $_POST['data_fim'];
+
+        $sql = "INSERT INTO tarefas (titulo, descricao, status, data_inicio, data_fim) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$titulo, $descricao, $status, $data_inicio, $data_fim]);
+
+        echo "Tarefa cadastrada com sucesso!";
+    }
+    ?>
+</body>
+</html>
+```
+
+---
+
+**Exemplo de Formulário para Registro de Atividades (em `atividades.php`):**
+
+```html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Atividades</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Registro de Atividades</h1>
+    <form action="atividades.php" method="POST">
+        <label for="descricao">Descrição da Atividade:</label>
+        <textarea id="descricao" name="descricao" required></textarea>
+
+        <label for="data_inicio">Data de Início:</label>
+        <input type="date" id="data_inicio" name="data_inicio" required>
+
+        <label for="data_fim">Data de Término:</label>
+        <input type="date" id="data_fim" name="data_fim">
+
+        <label for="id_membro">Selecione o Membro:</label>
+        <select id="id_membro" name="id_membro" required>
+            <?php
+            require 'conexao.php';
+            $stmt = $conn->query("SELECT id, nome FROM membros");
+            while ($membro = $stmt->fetch()) {
+                echo "<option value='{$membro['id']}'>{$membro['nome']}</option>";
+            }
+            ?>
+        </select>
+
+        <label for="id_tarefa">Selecione a Tarefa:</label>
+        <select id="id_tarefa" name="id_tarefa" required>
+            <?php
+            $stmt = $conn->query("SELECT id, titulo FROM tarefas");
+            while ($tarefa = $stmt->fetch()) {
+                echo "<option value='{$tarefa['id']}'>{$tarefa['titulo']}</option>";
+            }
+            ?>
+        </select>
+
+        <button type="submit">Registrar Atividade</button>
+    </form>
+
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $descricao = $_POST['descricao'];
+        $data_inicio = $_POST['data_inicio'];
+        $data_fim = $_POST['data_fim'];
+        $id_membro = $_POST['id_membro'];
+        $id_tarefa = $_POST['id_tarefa'];
+
+        $sql = "INSERT INTO atividades (descricao, data_inicio, data_fim, id_membro, id_tarefa) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$descricao, $data_inicio, $data_fim, $id_membro, $id_tarefa]);
+
+        echo "Atividade registrada com sucesso!";
+    }
+    ?>
+</body>
+</html>
+```

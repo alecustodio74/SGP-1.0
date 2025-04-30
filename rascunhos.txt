@@ -1,0 +1,17 @@
+/* Estrutura Inicial do Sistema de Gestão de Projetos */
+Feito pela IA
+
+**Estrutura de Arquivos:**
+
+```
+projeto-gestao/
+|-- index.php            (Página inicial)
+|-- style.css            (Folha de estilo CSS)
+|-- conexao.php          (Conexão com o banco de dados MySQL)
+|-- projetos.php         (Cadastro de projetos)
+|-- membros.php          (Cadastro de membros)
+|-- tarefas.php          (Cadastro de tarefas)
+|-- atividades.php       (Registro de atividades)
+|-- /assets              (Pasta com imagens e outros arquivos)
+|-- /scripts             (Pasta com scripts auxiliares)
+```

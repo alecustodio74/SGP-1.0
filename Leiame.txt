@@ -1,0 +1,15 @@
+Sistema de Gestão de Projetos
+Versão 1.0
+Desenvolvedor: Alexandre Ricardo Custódio de Souza
+Data inicial: 27/03/2025
+
+Disciplina: Eletiva Linguagem de Programação IV
+
+17.Sistema de Gestão de Projetos
+
+o Escopo: Gerenciamento de projetos de uma equipe.
+o RF1: CRUD para cadastro de projetos.
+o RF2: CRUD para cadastro de membros.
+o RF3: CRUD para cadastro de tarefas.
+o RF4: Registrar atividades, relacionando projetos, membros e tarefas (informar também
+       a data de início e a data prevista de término).
