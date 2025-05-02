@@ -1,0 +1,303 @@
+Este é o exemplo que peguei com o Gemini para a opção de atualização de senha em 2/5/2025
+
+São 4 arquivos que já criei aqui no PHP
+1 - Redefinir Senha
+2 - Atualizar Senha
+3 - Enviar Email Redefinição de Senha
+4 - Nova Senha
+
+Cire uma página em php para redefinição de senha e envio de e-mail para o usuário criar uma nova senha através de um link do site
+
+
+Página de Redefinição de Senha em PHP
+Este é um exemplo básico de uma página PHP para iniciar o processo de redefinição de senha. Ele envolve um formulário para o usuário inserir seu e-mail e, ao submeter, envia um e-mail com um link único para uma página onde ele poderá criar uma nova senha.
+
+Estrutura dos Arquivos:
+
+redefinir_senha.php (formulário para inserir o e-mail)
+enviar_email_redefinicao.php (processa o formulário, gera o token e envia o e-mail)
+nova_senha.php (página para o usuário criar a nova senha, acessada pelo link do e-mail)
+atualizar_senha.php (processa o formulário de nova senha e atualiza a senha no banco de dados)
+conexao.php (arquivo com as informações de conexão ao banco de dados - não incluído aqui por segurança, você precisará criar o seu)
+Conteúdo de redefinir_senha.php:
+
+PHP
+
+<?php
+    $mensagem = "";
+    if (isset($_GET['erro'])) {
+        $mensagem = "<div class='alert alert-danger'>E-mail não encontrado em nossa base de dados.</div>";
+    } elseif (isset($_GET['sucesso'])) {
+        $mensagem = "<div class='alert alert-success'>Um link para redefinição de senha foi enviado para o seu e-mail. Verifique sua caixa de entrada e spam.</div>";
+    }
+?>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinir Senha</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Redefinir sua senha
+                    </div>
+                    <div class="card-body">
+                        <?php echo $mensagem; ?>
+                        <p>Informe o seu endereço de e-mail para enviarmos um link de redefinição de senha.</p>
+                        <form action="enviar_email_redefinicao.php" method="POST">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">E-mail:</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar link de redefinição</button>
+                            <div class="mt-3">
+                                <a href="login.php">Voltar para o login</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+Conteúdo de enviar_email_redefinicao.php:
+
+PHP
+
+<?php
+require_once("conexao.php"); // Inclui suas informações de conexão ao banco de dados
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        // 1. Verificar se o e-mail existe no banco de dados
+        $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE email = :email");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($usuario) {
+            $user_id = $usuario['id'];
+
+            // 2. Gerar um token único de redefinição de senha
+            $token = bin2hex(random_bytes(32));
+            $expiry_time = date("Y-m-d H:i:s", time() + (60 * 60)); // Validade de 1 hora
+
+            // 3. Salvar o token no banco de dados associado ao usuário
+            $stmt = $pdo->prepare("UPDATE usuarios SET reset_token = :token, reset_token_expiry = :expiry WHERE id = :id");
+            $stmt->bindParam(':token', $token);
+            $stmt->bindParam(':expiry', $expiry_time);
+            $stmt->bindParam(':id', $user_id);
+            $stmt->execute();
+
+            // 4. Criar o link de redefinição de senha
+            $reset_link = "http://seu_dominio.com/nova_senha.php?token=" . $token; // Substitua seu_dominio.com
+
+            // 5. Enviar o e-mail com o link
+            $assunto = "Redefinição de Senha - Seu Sistema";
+            $corpo = "Olá,<br><br>Você solicitou a redefinição da sua senha em nosso sistema.<br><br>Para criar uma nova senha, clique no link abaixo ou copie e cole no seu navegador:<br><br><a href='" . $reset_link . "'>" . $reset_link . "</a><br><br>Este link é válido por 1 hora.<br><br>Se você não solicitou esta redefinição, ignore este e-mail.<br><br>Atenciosamente,<br>Sua Equipe.";
+            $headers = "MIME-Version: 1.0\r\n";
+            $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+            $headers .= "From: seu_email@seu_dominio.com\r\n"; // Substitua seu_email@seu_dominio.com
+
+            if (mail($email, $assunto, $corpo, $headers)) {
+                header("Location: redefinir_senha.php?sucesso=1");
+                exit();
+            } else {
+                die("Erro ao enviar o e-mail de redefinição."); // Log este erro
+            }
+
+        } else {
+            // E-mail não encontrado
+            header("Location: redefinir_senha.php?erro=1");
+            exit();
+        }
+
+    } else {
+        die("E-mail inválido.");
+    }
+} else {
+    header("Location: redefinir_senha.php");
+    exit();
+}
+?>
+Conteúdo de nova_senha.php:
+
+PHP
+
+<?php
+    $mensagem = "";
+    $token = $_GET['token'] ?? null;
+
+    if (!$token) {
+        $mensagem = "<div class='alert alert-danger'>Link de redefinição inválido.</div>";
+    } else {
+        require_once("conexao.php");
+        $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE reset_token = :token AND reset_token_expiry > NOW()");
+        $stmt->bindParam(':token', $token);
+        $stmt->execute();
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$usuario) {
+            $mensagem = "<div class='alert alert-danger'>Link de redefinição inválido ou expirado. Solicite novamente a redefinição de senha.</div>";
+            $token = null; // Para desabilitar o formulário
+        }
+    }
+
+    if (isset($_GET['senha_sucesso'])) {
+        $mensagem = "<div class='alert alert-success'>Sua senha foi redefinida com sucesso! <a href='login.php'>Faça login</a>.</div>";
+        $token = null; // Para desabilitar o formulário após a redefinição
+    } elseif (isset($_GET['senha_erro'])) {
+        $mensagem = "<div class='alert alert-danger'>Erro ao redefinir a senha. Tente novamente.</div>";
+    }
+?>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Nova Senha</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Criar Nova Senha
+                    </div>
+                    <div class="card-body">
+                        <?php echo $mensagem; ?>
+                        <?php if ($token): ?>
+                            <form action="atualizar_senha.php" method="POST">
+                                <input type="hidden" name="token" value="<?php echo $token; ?>">
+                                <div class="mb-3">
+                                    <label for="nova_senha" class="form-label">Nova Senha:</label>
+                                    <input type="password" class="form-control" id="nova_senha" name="nova_senha" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmar_senha" class="form-label">Confirmar Nova Senha:</label>
+                                    <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Redefinir Senha</button>
+                            </form>
+                        <?php endif; ?>
+                        <div class="mt-3">
+                            <a href="login.php">Voltar para o login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+Conteúdo de atualizar_senha.php:
+
+PHP
+
+<?php
+require_once("conexao.php"); // Inclui suas informações de conexão ao banco de dados
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $token = filter_input(INPUT_POST, 'token');
+    $nova_senha = filter_input(INPUT_POST, 'nova_senha');
+    $confirmar_senha = filter_input(INPUT_POST, 'confirmar_senha');
+
+    if ($nova_senha === $confirmar_senha && strlen($nova_senha) >= 6) { // Adicione validações de senha
+        $senha_hash = password_hash($nova_senha, PASSWORD_DEFAULT);
+
+        $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE reset_token = :token AND reset_token_expiry > NOW()");
+        $stmt->bindParam(':token', $token);
+        $stmt->execute();
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($usuario) {
+            $user_id = $usuario['id'];
+
+            $stmt = $pdo->prepare("UPDATE usuarios SET senha = :senha, reset_token = NULL, reset_token_expiry = NULL WHERE id = :id");
+            $stmt->bindParam(':senha', $senha_hash);
+            $stmt->bindParam(':id', $user_id);
+
+            if ($stmt->execute()) {
+                header("Location: nova_senha.php?senha_sucesso=1");
+                exit();
+            } else {
+                header("Location: nova_senha.php?senha_erro=1");
+                exit();
+            }
+        } else {
+            header("Location: nova_senha.php?erro=1"); // Link inválido ou expirado
+            exit();
+        }
+    } else {
+        header("Location: nova_senha.php?erro=2"); // Senhas não coincidem ou são muito curtas
+        exit();
+    }
+} else {
+    header("Location: redefinir_senha.php");
+    exit();
+}
+?>
+Conteúdo de conexao.php (Exemplo Básico - VOCÊ PRECISA CONFIGURAR O SEU):
+
+PHP
+
+<?php
+$host = 'localhost';
+$dbname = 'seu_banco_de_dados';
+$username = 'seu_usuario';
+$password = 'sua_senha';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erro na conexão com o banco de dados: " . $e->getMessage());
+}
+?>
+Considerações 1  Importantes:   
+1.
+github.com
+github.com
+
+Segurança:
+Use password_hash() para armazenar as senhas no banco de dados e password_verify() para verificá-las durante o login.
+Gere tokens de redefinição de senha seguros e únicos (como no exemplo com random_bytes()).
+Defina um tempo de expiração razoável para o token de redefinição.
+Valide e sanitize todas as entradas do usuário para prevenir ataques de SQL Injection e outros.
+Banco de Dados: Você precisará de uma tabela de usuários no seu banco de dados com colunas para id, email, senha, reset_token, e reset_token_expiry.
+Configuração de E-mail: Certifique-se de que a função mail() esteja configurada corretamente no seu servidor PHP para enviar e-mails.
+Tratamento de Erros: Implemente um tratamento de erros mais robusto para informar os usuários sobre problemas e para registrar erros para depuração.
+Interface do Usuário: Adapte o HTML e CSS para corresponder ao design do seu site.
+Testes: Teste minuciosamente todo o processo de redefinição de senha para garantir que funcione corretamente e seja seguro.
+Link no E-mail: Substitua http://seu_dominio.com e seu_email@seu_dominio.com pelos seus valores reais.

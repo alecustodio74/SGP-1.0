@@ -25,7 +25,33 @@
         });
       });
     </script>
-    
+
+    <!-- Sweet Alert para informar usuário cadastrado com sucesso e ir para a tela de login -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const formNovoUsuario = document.getElementById('formNovoUsuario');
+    const btnNovoUsuario = document.getElementById('btnNovoUsuario');
+
+    if (formNovoUsuario && btnNovoUsuario) {
+      btnNovoUsuario.addEventListener('click', function(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            Swal.fire({
+                title: 'Cadastro efetuado com sucesso!',
+                text: "Faça seu primeiro login",
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK!',
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    // Envia o formulário programaticamente
+                    formNovoUsuario.submit();
+                }
+      })
+    })}
+  });
+    </script>
+
     <!-- Os 3 links script abaixo servem para criar paginação -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>

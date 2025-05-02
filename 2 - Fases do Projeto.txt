@@ -1,0 +1,38 @@
+SGP - Sistema de Gerenciamento de Projetos
+
+Página de Login (index.php) - ok
+Principal (principal.php) - ok
+Cabeçalho (header.php) - ok
+Novo usuário (novo_usuario.php) - ok
+
+Cadastro
+- Clientes (id, nome)
+- Colaboradores (id, nome, email, cargo)
+- Projetos (id, nome, preço) Ex: Home Page, Site, Portal, Sistema, Aplicativo .NET, App Móvel
+- Tarefas (id, nome) Ex: Escrever o HTML, Inserir CSS, Criar Funções Javascript, Programar PHP, Programar C#, Criar Banco de Dados
+
+Atividades (será uma página sobre os projetos e tarefas em andamento - em tempo "real")
+- Projetos em andamento (id, nome, id do projeto, id do desenvolvedor, nome do desenvolvedor, id do cliente, nome do cliente, tarefa em andamento, data início, data fim)
+- Ver arquivo Leiame.txt
+
+Consulta
+- Clientes (mostra a lista de clientes e opção mostrar detalhes para ver todos os dados "se houver")
+- Colaboradores (idem ao de clientes)
+- Projetos (mostra a lista de projetos e opção ver detalhes por desenvolvedor ou por data)
+- Tarefas (mostra o que está sendo feito por todos desenvolvedores e permite exibir detalhes)
+
+
+Páginas de exemplos prontas
+- Produtos
+- Categorias
+
+
+Rodapé (footer.php) - ok
+Alterar Dados (alterar_dados.php) - melhorar para dados e senha serem modificados em páginas diferentes
+Sair (sair.php) - ok
+
+Redefinição de senha: ver arquivo redefinir_senha.txt
+
+Banco de dados: projetophp (em andamento)
+
+Backup ?

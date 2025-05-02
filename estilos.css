@@ -69,12 +69,12 @@ body {
 .input-group input[type="email"],
 .input-group input[type="password"] {
     width: calc(100%); /* Garante o mesmo tamanho */
-    padding: 10px;
+    
     display: flex;    
     border: 1px solid #7f8c8d; /* Cinza médio para a borda dos inputs */
     border-radius: 5px;
     background-color: #d7dbdf; /* Azul mais escuro para o fundo dos inputs */
-    color: #ecf0f1; /* Cinza claro para o texto dentro dos inputs */
+    color: #070707; /* Cinza claro para o texto dentro dos inputs */
     box-sizing: border-box;
 }
 
@@ -103,4 +103,20 @@ body {
 
 .links a:hover {
     color: #fff;
+}
+
+.lgpd{
+    margin-top: 5%;
+}
+.form-check-input{
+    float:inline-start;
+    margin-top: 2%;
+    margin-bottom: 20%;
+    margin-right: 20px;
+}
+
+.errologin{ /* para a mensagem de erro php aparecer no topo */
+    position:absolute;
+    top: 0;
+    margin: right;
 }

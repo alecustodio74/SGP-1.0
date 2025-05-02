@@ -1,6 +1,53 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<?php
+require_once('conexao.php'); //inicia conexao com o banco de dados.
+//neste exercicio é o dbname=projetophp que declaramos no conexao.php
+?>
+
+<?php
+    if ($_SERVER['REQUEST_METHOD'] == "POST"){
+        try{
+                $email = $_POST['email'];
+                $senha = $_POST['senha'];
+                $stmt = $pdo->prepare('SELECT * FROM usuarios WHERE email = ?');
+                $stmt->execute([$email]);
+                //$stmt prepara o sql para inserir os dados
+                $usuario = $stmt->fetch(PDO::FETCH_ASSOC); //variável que recebe todos os dados do SELECT
+                    if ($usuario && password_verify($senha, $usuario['senha'])){
+                    session_start();
+                    //$_SESSION['usuario'] = $email;
+                    $_SESSION['usuario'] = $usuario['nome'];
+                    $_SESSION['acesso'] = true;
+                    $_SESSION['id'] = $usuario['id']; //incluido em 03/04/2025
+                    header('location: principal.php'); //muda o cabeçalho da resposta, como redirecionar para outra página.
+                }else{
+                    $mensagem['erro'] = "Usuário e/ou senha incorretos!";
+                }
+            } catch(Exception $e){
+            echo "Erro: ".$e->getMessage();
+            die(); //se der erro ele encerra a aplicação
+        }
+    }
+?>
+
+<div class="errologin">
+<?php //para exibir a mensagem de erro em caso de entrada de e-mail e/ou senha incorretos no login
+    if (isset($mensagem['erro'])): ?>
+    <div class="alert alert-danger mt-3 mb-3">
+        <?= $mensagem['erro'] ?>
+    </div>
+    <?php endif; ?>
     
+    
+    <?php //para exibir a mensagem de erro ao tentar acessar alguma página pela url sem estar logado
+    if ((isset($_GET['mensagem'])) && ($_GET['mensagem'] == "acesso_negado")): ?>
+    <div class="alert alert-danger mt-3 mb-3">
+        Você precisa informar seus dados de acesso para entrar no sistema!
+    </div>
+    <?php endif; ?>
+</div> <!-- erro login -->
+
+<!DOCTYPE html>
+    <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,53 +58,11 @@
 </head>
 
 <body>
-
-    <?php
-    require_once('conexao.php'); //inicia conexao com o banco de dados.
-    //neste exercicio é o dbname=projetophp que declaramos no conexao.php
-        if ($_SERVER['REQUEST_METHOD'] == "POST"){
-            try{
-                    $email = $_POST['email'];
-                    $senha = $_POST['senha'];
-                    $stmt = $pdo->prepare('SELECT * FROM usuarios WHERE email = ?');
-                    $stmt->execute([$email]);
-                    //$stmt prepara o sql para inserir os dados
-                    $usuario = $stmt->fetch(PDO::FETCH_ASSOC); //variável que recebe todos os dados do SELECT
-                        if ($usuario && password_verify($senha, $usuario['senha'])){
-                        session_start();
-                        //$_SESSION['usuario'] = $email;
-                        $_SESSION['usuario'] = $usuario['nome'];
-                        $_SESSION['acesso'] = true;
-                        $_SESSION['id'] = $usuario['id']; //incluido em 03/04/2025
-                        header('location: principal.php'); //muda o cabeçalho da resposta, como redirecionar para outra página.
-                    }else{
-                        $mensagem['erro'] = "Usuário e/ou senha incorretos!";
-                    }
-                } catch(Exception $e){
-                echo "Erro: ".$e->getMessage();
-                die(); //se der erro ele encerra a aplicação
-            }
-        }
-    ?>
-
-    <?php //para exibir a mensagem de erro em caso de entrada de e-mail e/ou senha incorretos no login
-    if (isset($mensagem['erro'])): ?>
-    <div class="alert alert-danger mt-3 mb-3">
-        <?= $mensagem['erro'] ?>
-    </div>
-    <?php endif; ?>
-
-    <?php //para exibir a mensagem de erro ao tentar acessar alguma página pela url sem estar logado
-    if ((isset($_GET['mensagem'])) && ($_GET['mensagem'] == "acesso_negado")): ?>
-    <div class="alert alert-danger mt-3 mb-3">
-        Você precisa informar seus dados de acesso para entrar no sistema!
-    </div>
-    <?php endif; ?>
-
     <div class="container">
         <div class="left-side">
-            <h1>Sistema de Gerenciamento de Projetos 1.0</h1>
+            <h1><p>SGP</p>Sistema de Gerenciamento de Projetos 1.0</h1>
         </div>
+
         <div class="login-container">
             <div class="login-header">
                 <h2>Acesso ao Sistema</h2>
@@ -74,12 +79,14 @@
                 <button type="submit" class="login-button">Entrar</button>
                 <div class="links">
                     <a href="#">Esqueceu sua senha?</a>
-                    <a href="/novo_usuario.php">Não possui acesso? Clique aqui</a>
+                    <a href="/novo_usuario.php">Não possui acesso? Cadastre-se!</a>
                 </div>
             </form>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>     
-</body>
-</html>
+
+<?php
+  require_once("footer.php"); //chama o rodapé da página com o script
+?>
