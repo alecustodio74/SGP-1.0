@@ -60,7 +60,7 @@ require_once('conexao.php'); //inicia conexao com o banco de dados.
 <body>
     <div class="container">
         <div class="left-side">
-            <h1><p>SGP</p>Sistema de Gerenciamento de Projetos 1.0</h1>
+            <h1><p>SGP</p>Sistema de Gerenciamento<p>de Projetos 1.0</p></h1>
         </div>
 
         <div class="login-container">

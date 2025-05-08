@@ -43,7 +43,7 @@ require_once("header.php"); //chama o cabeçalho da página
 
     <?php
         if (isset($_GET['excluido']) && $_GET['excluido'] == true){
-            echo '<p class="text-success">Registro excluido com sucesso"</p>';
+            echo '<p class="text-success">Registro excluido com sucesso!</p>';
         } else if (isset($_GET['excluido']) && $_GET['excluido'] == true){
             echo '<p class="text-danger">Erro ao excluir o registro!</p>';
         }

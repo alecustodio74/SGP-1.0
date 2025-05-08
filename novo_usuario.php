@@ -6,19 +6,27 @@
             $email = $_POST['email'];
             $senha = ($_POST['senha']);
             $confirmaSenha = ($_POST['confirmaSenha']);
-            if ($senha === $confirmaSenha){
-                $senha = password_hash($_POST['senha'], PASSWORD_BCRYPT); //Criptografando a senha de usuário
-                $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
-                //para conferir as senhas
-                //$stmt prepara o sql para inserir os dados
-                if ($stmt->execute([$nome, $email, $senha])){ //inserie os dados como um array
-                    header("location: index.php?cadastro=true");
-                } else {
-                    echo "<p>Erro ao inserir usuário!</p>";
-                }
+
+            // Verifica se email já existe
+            $check = $pdo->prepare("SELECT id FROM usuarios WHERE email = ?");
+            $check->execute([$email]);
+            if ($check->rowCount() > 0) {
+                $mensagem['erro'] = "Email já existe no sistema. Cadastre-se com outro e-mail ! ";
             } else {
-                $mensagem['erro'] = "Senhas não conferem. Redigite e confirme a senha!";
-            }            
+                if ($senha === $confirmaSenha){
+                    $senha = password_hash($_POST['senha'], PASSWORD_BCRYPT); //Criptografando a senha de usuário
+                    $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
+                    //para conferir as senhas
+                    //$stmt prepara o sql para inserir os dados
+                    if ($stmt->execute([$nome, $email, $senha])){ //inserie os dados no DB como um array
+                        header("location: index.php?cadastro=true");
+                    } else {
+                        echo "<p>Erro ao inserir usuário!</p>";
+                    }
+                } else {
+                    $mensagem['erro'] = "Senhas não conferem. Redigite e confirme a senha!";
+                }
+            }
         } catch (Exception $e) {
             echo "Erro ao inserir usuário". $e->getMessage();
         }
@@ -59,7 +67,7 @@
 <body>
     <div class="container">
         <div class="left-side">
-            <h1><p>SGP</p>Sistema de Gerenciamento de Projetos 1.0</h1>
+            <h1><a class="navbar-brand" href="index.php"><p>SGP</p>Sistema de Gerenciamento<p>de Projetos 1.0</p></a></h1>
         </div>
     
     <div class="login-container">

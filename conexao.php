@@ -10,6 +10,6 @@
     try{
         $pdo = new PDO($dominio, $usuario, $senha); //intancia o banco de dados
     } catch (PDOException $e) {
-        die("Erro ao conectar com banco!" .$e->getMessage());
+        die("Erro ao conectar com o banco!" .$e->getMessage());
     }
 ?>

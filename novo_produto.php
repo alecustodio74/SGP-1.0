@@ -7,7 +7,7 @@
             $sql = "INSERT INTO produto (nome, descricao, preco, categoria_id) VALUES (?,?,?,?)";
             $stmt = $pdo->prepare($sql);
             if ($stmt->execute([$nome, $descricao, $preco, $categoria_id])){
-                header('location: produtos.php?cadastro=treue');
+                header('location: produtos.php?cadastro=true');
             } else{
                 header('location: produtos.php?cadastro=false');
             }

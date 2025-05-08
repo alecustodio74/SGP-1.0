@@ -4,6 +4,7 @@ Página de Login (index.php) - ok
 Principal (principal.php) - ok
 Cabeçalho (header.php) - ok
 Novo usuário (novo_usuario.php) - ok
+Corrigir: Sweet Alert está aparecendo com cadastro ok mesmo se não foi selecionado o ckeck do LGPD, porém não cadastra e não vai para a página de login.
 
 Cadastro
 - Clientes (id, nome)
@@ -36,3 +37,5 @@ Redefinição de senha: ver arquivo redefinir_senha.txt
 Banco de dados: projetophp (em andamento)
 
 Backup ?
+
+Haverá um usuário Main que acessa todas as funcionalidades? Talvez

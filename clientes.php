@@ -1,40 +1,77 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<?php
+require_once("header.php");
+  
+  function retornaClientes(){
+    require("conexao.php");
+    try{
+        $sql = "SELECT * FROM clientes";
+        $stmt = $pdo->query($sql);
+        return $stmt->fetchAll();
+    }catch (Exception $e){
+        die("Erro ao consultar os clientes: " . $e->getMessage());
+    }
+  }
+
+  $clientes = retornaClientes();
+?>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Clientes</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Clientes</title>
 </head>
-<body>
-    <h1>Cadastro de Clientes</h1>
-    <form action="" method="POST">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" required>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email">
-
-        <label for="cargo">Cargo:</label>
-        <input type="text" id="cargo" name="cargo">
-
-        <button type="submit">Cadastrar Cliente</button>
-    </form>
+ 
+    <h4>Clientes</h4>
+    <a href="novo_cliente.php" class="btn btn-success mb-3">Novo Registro</a>
 
     <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        require 'conexao.php';
-
-        $nome = $_POST['nome'];
-        $email = $_POST['email'];
-        $cargo = $_POST['cargo'];
-
-        $sql = "INSERT INTO cliente (nome, email, cargo) VALUES (?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$nome, $email, $cargo]);
-
-        echo "Cliente cadastrado com sucesso!";
-    }
+        if (isset($_GET['clientes']) && $_GET['clientes'] == true){
+            echo '<p class="text-success">Registro salvo com sucesso!</p>';
+        } else if (isset($_GET['clientes']) && $_GET['clientes'] == false){
+            echo '<p class="text-danger">Erro ao inserir o registro!</p>';
+        }
     ?>
-</body>
-</html>
+
+    <?php
+        if (isset($_GET['alterado']) && $_GET['alterado'] == true){
+            echo '<p class="text-success">Registro alterado com sucesso!</p>';
+        } else if (isset($_GET['alterado']) && $_GET['alterado'] == false){
+            echo '<p class="text-danger">Erro ao alterar o registro!</p>';
+        }
+    ?>
+
+    <?php
+        if (isset($_GET['excluido']) && $_GET['excluido'] == true){
+            echo '<p class="text-success">Registro excluido com sucesso!</p>';
+        } else if (isset($_GET['excluido']) && $_GET['excluido'] == true){
+            echo '<p class="text-danger">Erro ao excluir o registro!</p>';
+        }
+    ?>
+
+    <table class="table table-hover table-striped" id="tabela">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOME</th><th>EMAIL</th><th style="text-align: center;">AÇÕES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                foreach($clientes as $c):
+            ?>
+                <tr>
+                    <td><?= $c['id'] ?></td>
+                    <td><?= $c['nome'] ?></td>
+                    <td><?= $c['email'] ?></td>
+                    <td  style="text-align: center;">
+                        <a href="editar_cliente.php?id=<?= $c['id'] ?>" class="btn btn-warning">Editar</a>
+                        <a href="consultar_cliente.php?id=<?= $c['id'] ?>" class="btn btn-info">Consultar</a>
+                    </td>
+                </tr>
+            <?php
+                endforeach
+            ?>  
+        </tbody>
+    </table>
+            
+<?php
+  require_once("footer.php"); //chama o rodapé da página com o script
+?>
