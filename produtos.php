@@ -7,9 +7,13 @@ require_once("header.php"); //chama o cabeçalho da página
   function retornaProdutos(){
     require("conexao.php");
     try{
-        $sql = "SELECT * FROM produto";
+        //$sql = "SELECT * FROM produto";
+        $sql = "SELECT p.*, c.nome as nome_categoria FROM produto p INNER JOIN categoria c ON c.id = p.categoria_id"; 
+        //08/05/2025 buscando o produto pelo nome da categoria
+        //INNER JOIN: vou pegar todos os dados de uma categoria, especificamente o nome da categoria
+        // antes estávamos exibindo apenas o id da categoria
         $stmt = $pdo->query($sql);
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(); //retorna todos os dados do banco
     }catch (Exception $e){
         die("Erro ao consultar os produtos: " . $e->getMessage());
     }
@@ -43,7 +47,7 @@ require_once("header.php"); //chama o cabeçalho da página
 
     <?php
         if (isset($_GET['excluido']) && $_GET['excluido'] == true){
-            echo '<p class="text-success">Registro excluido com sucesso!</p>';
+            echo '<p class="text-success">Registro excluido com sucesso"</p>';
         } else if (isset($_GET['excluido']) && $_GET['excluido'] == true){
             echo '<p class="text-danger">Erro ao excluir o registro!</p>';
         }
@@ -65,7 +69,8 @@ require_once("header.php"); //chama o cabeçalho da página
                     <td><?= $p['nome'] ?></td>
                     <td><?= $p['descricao'] ?></td>
                     <td><?= $p['preco'] ?></td>
-                    <td style="text-align: center;"><?= $p['categoria_id'] ?></td>
+                    <!-- <td style="text-align: center;"><?= $p['categoria_id'] ?></td> -->
+                    <td style="text-align: center;"><?= $p['nome_categoria'] ?></td>
                     <td  style="text-align: center;">
                         <a href="editar_produto.php?id=<?= $p['id'] ?>" class="btn btn-warning">Editar</a>
                         <a href="consultar_produto.php?id=<?= $p['id'] ?>" class="btn btn-info">Consultar</a>

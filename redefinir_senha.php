@@ -17,7 +17,7 @@
     <meta name="author" content="Alexandre Ricardo Custódio de Souza">
     <style>
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(to right,#3e6fca,#083b6e);
         }
         .container {
             margin-top: 50px;
@@ -42,7 +42,7 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Enviar link de redefinição</button>
                             <div class="mt-3">
-                                <a href="login.php">Voltar para o login</a>
+                                <a href="index.php">Voltar para o login</a>
                             </div>
                         </form>
                     </div>

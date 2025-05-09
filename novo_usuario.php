@@ -41,14 +41,12 @@
     </div>
     <?php endif; ?>
     
-    
     <?php //para exibir a mensagem de erro ao tentar acessar alguma página pela url sem estar logado
     if ((isset($_GET['mensagem'])) && ($_GET['mensagem'] == "acesso_negado")): ?>
     <div class="alert alert-danger mt-3 mb-3">
         Você precisa informar seus dados de acesso para entrar no sistema!
     </div>
     <?php endif; ?>
-
 </div> <!-- erro login -->
 
 <!DOCTYPE html>
@@ -101,12 +99,7 @@
             </div>
             <button type="submit" class="btn btn-primary" id="btnNovoUsuario">Cadastrar</button>
         </form>
-
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
-        <script>
-            // Seu código JavaScript aqui
-        </script>
-
+       
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>     
 
 <?php

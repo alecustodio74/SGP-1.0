@@ -58,6 +58,10 @@
         <p>Preço: <b><?= $produto['preco'] ?></b></p>
     </div>
 
+    <div class="mb-3">
+        <p>Categoria: <b><?= $produto['categoria_id'] ?></b></p>
+    </div>
+
 <div class="mb-3">
         <p class="text-danger">Deseja excluir este registro?</p>
         <button type="submit" class="btn btn-danger">Excluir</button>

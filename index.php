@@ -1,9 +1,7 @@
 <?php
 require_once('conexao.php'); //inicia conexao com o banco de dados.
-//neste exercicio é o dbname=projetophp que declaramos no conexao.php
-?>
+//o dbname=projetophp que declaramos no conexao.php
 
-<?php
     if ($_SERVER['REQUEST_METHOD'] == "POST"){
         try{
                 $email = $_POST['email'];
@@ -37,11 +35,25 @@ require_once('conexao.php'); //inicia conexao com o banco de dados.
     </div>
     <?php endif; ?>
     
-    
     <?php //para exibir a mensagem de erro ao tentar acessar alguma página pela url sem estar logado
     if ((isset($_GET['mensagem'])) && ($_GET['mensagem'] == "acesso_negado")): ?>
     <div class="alert alert-danger mt-3 mb-3">
         Você precisa informar seus dados de acesso para entrar no sistema!
+    </div>
+    <?php endif; ?>
+
+    <?php //Para exibir a mensagem de primeiro login após se cadastrar
+    if ((isset($_GET['cadastro'])) && ($_GET['cadastro'] == "true")): ?>
+    <div class="alert alert-success mt-3 mb-3">
+        Cadastro realizado com sucesso. Faça seu primeiro login!
+    </div>
+    <?php endif; ?>
+
+
+     <?php //Para exibir a mensagem de primeiro login após se cadastrar
+    if ((isset($_GET['alterado'])) && ($_GET['alterado'] == "true")): ?>
+    <div class="alert alert-success mt-3 mb-3">
+        Alteração realizada com sucesso. Faça login novamente!
     </div>
     <?php endif; ?>
 </div> <!-- erro login -->
@@ -58,6 +70,7 @@ require_once('conexao.php'); //inicia conexao com o banco de dados.
 </head>
 
 <body>
+
     <div class="container">
         <div class="left-side">
             <h1><p>SGP</p>Sistema de Gerenciamento<p>de Projetos 1.0</p></h1>
@@ -78,7 +91,7 @@ require_once('conexao.php'); //inicia conexao com o banco de dados.
                 </div>
                 <button type="submit" class="login-button">Entrar</button>
                 <div class="links">
-                    <a href="#">Esqueceu sua senha?</a>
+                    <a href="atualizar_senha.php">Esqueceu sua senha?</a>
                     <a href="/novo_usuario.php">Não possui acesso? Cadastre-se!</a>
                 </div>
             </form>

@@ -18,7 +18,7 @@
     }
 
     if (isset($_GET['senha_sucesso'])) {
-        $mensagem = "<div class='alert alert-success'>Sua senha foi redefinida com sucesso! <a href='login.php'>Faça login</a>.</div>";
+        $mensagem = "<div class='alert alert-success'>Sua senha foi redefinida com sucesso! <a href='index.php'>Faça login</a>.</div>";
         $token = null; // Para desabilitar o formulário após a redefinição
     } elseif (isset($_GET['senha_erro'])) {
         $mensagem = "<div class='alert alert-danger'>Erro ao redefinir a senha. Tente novamente.</div>";
@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(to right,#3e6fca,#083b6e);
         }
         .container {
             margin-top: 50px;
@@ -66,7 +66,7 @@
                             </form>
                         <?php endif; ?>
                         <div class="mt-3">
-                            <a href="login.php">Voltar para o login</a>
+                            <a href="index.php">Voltar para o login</a>
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,7 @@
 </head>
 <body>
     <?php
-        session_start();
+        //session_start(); incia uma sessão
         //unset($_SESSION['usuario']); //apaga uma sessão especifica
         session_destroy(); //destroi qualquer valor armazenado
         header("location: index.php"); //direciona para a página principal

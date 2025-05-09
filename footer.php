@@ -26,7 +26,7 @@
       });
     </script>
 
-    <!-- Sweet Alert para informar usuário cadastrado com sucesso e ir para a tela de login -->
+<!-- Sweet Alert para informar usuário cadastrado com sucesso e ir para a tela de login
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const formNovoUsuario = document.getElementById('formNovoUsuario');
@@ -41,16 +41,18 @@
                 text: "Faça seu primeiro login",
                 icon: 'success',
                 confirmButtonColor: '#3085d6',
-                confirmButtonText: 'OK!',
+                confirmButtonText: 'OK',
                 }).then((result) => {
                 if (result.isConfirmed) {
                     // Envia o formulário programaticamente
-                    formNovoUsuario.submit();
+                    //formNovoUsuario.submit();
+                    window.location.href = "index.php";
                 }
       })
     })}
   });
     </script>
+    -->
 
     <!-- Os 3 links script abaixo servem para criar paginação -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>

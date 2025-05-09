@@ -26,14 +26,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
 
             // 4. Criar o link de redefinição de senha
-            $reset_link = "http://seu_dominio.com/nova_senha.php?token=" . $token; // Substitua seu_dominio.com
+            //$reset_link = "http://seu_dominio.com/nova_senha.php?token=" . $token; // Substitua seu_dominio.com
+            $reset_link = "http://localhost:8080/nova_senha.php?token=" . $token; // Substitua seu_dominio.com
 
             // 5. Enviar o e-mail com o link
             $assunto = "Redefinição de Senha - Seu Sistema";
             $corpo = "Olá,<br><br>Você solicitou a redefinição da sua senha em nosso sistema.<br><br>Para criar uma nova senha, clique no link abaixo ou copie e cole no seu navegador:<br><br><a href='" . $reset_link . "'>" . $reset_link . "</a><br><br>Este link é válido por 1 hora.<br><br>Se você não solicitou esta redefinição, ignore este e-mail.<br><br>Atenciosamente,<br>Sua Equipe.";
             $headers = "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-            $headers .= "From: seu_email@seu_dominio.com\r\n"; // Substitua seu_email@seu_dominio.com
+            //$headers .= "From: seu_email@seu_dominio.com\r\n"; // Substitua seu_email@seu_dominio.com
+            $headers .= "From: teste@localhost\r\n"; // Substitua seu_email@seu_dominio.com
 
             if (mail($email, $assunto, $corpo, $headers)) {
                 header("Location: redefinir_senha.php?sucesso=1");

@@ -53,8 +53,8 @@
     </div>
 
     <div class="mb-3">
-        <label for="email" class="form-label">Informe o Enmail</label>
-        <input value="<?= $cliente['email'] ?>" type="email" id="email" name="email" class="form-control" required=""><?= $cliente['email'] ?>
+        <label for="email" class="form-label">Informe o Email</label>
+        <input value="<?= $cliente['email'] ?>" type="email" id="email" name="email" class="form-control" required="">
     </div>
    
     <button type="submit" class="btn btn-primary">Confirmar</button>
