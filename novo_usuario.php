@@ -65,7 +65,7 @@
 <body>
     <div class="container">
         <div class="left-side">
-            <h1><a class="navbar-brand" href="index.php"><p>SGP</p>Sistema de Gerenciamento<p>de Projetos 1.0</p></a></h1>
+            <h1><a class="navbar-brand" href="index.php"><p><img src="img/Logo_SGP_dado.png" style="width: 40%;"></p>Sistema de Gerenciamento<p>de Projetos 1.0</p></a></h1>
         </div>
     
     <div class="login-container">

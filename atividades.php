@@ -1,12 +1,27 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<?php
+    require_once("header.php");
+?>
+
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $descricao = $_POST['descricao'];
+        $data_inicio = $_POST['data_inicio'];
+        $data_fim = $_POST['data_fim'];
+        $id_membro = $_POST['id_membro'];
+        $id_tarefa = $_POST['id_tarefa'];
+
+        $sql = "INSERT INTO atividades (descricao, data_inicio, data_fim, id_membro, id_tarefa) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$descricao, $data_inicio, $data_fim, $id_membro, $id_tarefa]);
+
+        echo "Atividade registrada com sucesso!";
+    }
+    ?>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Atividades</title>
-    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+
     <h1>Registro de Atividades</h1>
     <form action="atividades.php" method="POST">
         <label for="descricao">Descrição da Atividade:</label>
@@ -42,20 +57,6 @@
         <button type="submit">Registrar Atividade</button>
     </form>
 
-    <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $descricao = $_POST['descricao'];
-        $data_inicio = $_POST['data_inicio'];
-        $data_fim = $_POST['data_fim'];
-        $id_membro = $_POST['id_membro'];
-        $id_tarefa = $_POST['id_tarefa'];
-
-        $sql = "INSERT INTO atividades (descricao, data_inicio, data_fim, id_membro, id_tarefa) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$descricao, $data_inicio, $data_fim, $id_membro, $id_tarefa]);
-
-        echo "Atividade registrada com sucesso!";
-    }
-    ?>
-</body>
-</html>
+<?php
+    require_once("footer.php");
+?>

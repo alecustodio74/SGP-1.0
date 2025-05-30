@@ -1,6 +1,32 @@
 <?php
     require_once("header.php");
 
+    function retornaCategorias(){
+        require("conexao.php");
+        try{
+            $sql = "SELECT * FROM categoria";
+            $stmt = $pdo->query($sql);
+            return $stmt->fetchAll();
+        } catch (Exception $e){
+            die("Erro ao consultar categorias: " . $e->getMessage());
+        }
+    }
+
+    function retornaProduto($id){
+        require("conexao.php");
+        try{
+            $sql = "SELECT * FROM produto WHERE id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$id]);
+            $produto = $stmt->fetch();
+            if (!$produto)
+                die("Erro ao retornar o produto!");
+            else    return $produto;
+        } catch (Exception $e){
+            die("Erro ao consultar o produto: " . $e->getMessage());
+        }
+    }
+
     function consultaProduto($id){
         require("conexao.php");
         try{
@@ -18,7 +44,7 @@
         }
     }
 
-    function alterarProduto($id, $nome, $descricao, $preco, $categoria_id){
+    function alterarProduto($nome, $descricao, $preco, $categoria_id, $id){
         require("conexao.php");
         try{
             $sql = "UPDATE produto SET nome = ?, descricao = ?, preco = ?, categoria_id = ? WHERE id = ?";
@@ -33,15 +59,16 @@
             die("Erro ao alterar o produto: " . $e->getMessage());
         }
     }
-        if ($_SERVER['REQUEST_METHOD'] == "POST"){
+        if ($_SERVER['REQUEST_METHOD'] == "POST"){ //se o formulario foi recebido
             $nome = $_POST['nome'];
             $descricao = $_POST['descricao'];
             $preco = $_POST['preco'];
             $categoria_id = $_POST['categoria_id'];
             $id = $_POST['id'];
-            alterarProduto($id, $nome, $descricao, $preco, $categoria_id);
+            alterarProduto($nome, $descricao, $preco, $categoria_id, $id);
         } else{
-            $produto = consultaProduto($_GET['id']);
+            $categorias = retornaCategorias();
+            $produto = retornaProduto($_GET['id']);
         }
 ?>
 <h4>Editar Produto</h4>
@@ -66,7 +93,17 @@
     
     <div class="mb-3">
         <label for="categoria_id" class="form-label">Categoria</label>
-        <input value="<?= $produto['categoria_id'] ?>" type="number" id="categoria_id" name="categoria_id" class="form-control" required=""<?= $produto['categoria_id'] ?>>
+
+        
+        <select id="categoria" name="categoria_id" class="form-select" required="">
+        <?php
+                foreach($categorias as $c): //colocamos o número e o nome da categoria dentro do select
+                    ?>
+                <option value="<?= $c['id'] ?>"  <?php if ($c['id'] == $produto['categoria_id']) echo "selected" ?> ><?= $c['id'] . ' - ' . $c['nome'] ?> </option>
+            <?php
+                endforeach;
+            ?>
+        </select>
     </div>
 
     <button type="submit" class="btn btn-primary">Confirmar</button>

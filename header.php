@@ -27,7 +27,7 @@ session_start();
 <body>   
     <nav class="navbar  navbar-expand-lg navbar-dark" style="background-color: #083b6e;">
       <div class="container-fluid">
-        <a class="navbar-brand" href="principal.php">Sistema de Gerenciamento de Projetos 1.0</a>
+        <a class="navbar-brand" href="principal.php"> <img src="img/Logo_SGP_dado.png" style="width: 5%; padding: 0; ">Sistema de Gerenciamento de Projetos 1.0</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -57,6 +57,9 @@ session_start();
             <li class="nav-item">
               <a class="nav-link" href="categorias.php">Categorias</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.php">Dashboard</a>
+            </li>
           </ul>
            
         <div class="d-flex">
@@ -67,6 +70,7 @@ session_start();
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="alterar_dados.php">Alterar Dados</a></li>
+                <li><a class="dropdown-item" href="sobre.php">Sobre</a></li>
                 <li><a class="dropdown-item btn btn-danger" href="sair.php" id="logoutButton">Sair</a></li>
               </ul>
             </li>

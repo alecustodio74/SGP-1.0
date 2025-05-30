@@ -32,7 +32,7 @@
     $nome = $_POST['nome'];
     $descricao = $_POST['descricao'];
     $preco = $_POST['preco'];
-    $categoria_id = $_POST['categoria'];
+    $categoria_id = $_POST['categoria_id'];
     inserirProduto($nome, $descricao, $preco, $categoria_id);
    }
 ?>
@@ -58,15 +58,15 @@
         
             <div class="mb-3">
                 <label for="categoria" class="form-label">Categoria</label>
-                <select id="categoria" name="categoria" class="form-select" required="">
-                    <?php
-                        foreach($categorias as $c):
+                 <select id="categoria" name="categoria_id" class="form-select" required="">
+        <?php
+                foreach($categorias as $c): //colocamos o número e o nome da categoria dentro do select
                     ?>
-                        <option value="<?= $c['id'] ?>"><?= $c['nome'] ?></option>
-                    <?php
-                        endforeach;
-                    ?>
-                </select>
+                <option value="<?= $c['id'] ?>"  <?php if ($c['id'] == $c['id']) echo "selected" ?> ><?= $c['id'] . ' - ' . $c['nome'] ?> </option>
+            <?php
+                endforeach;
+            ?>
+        </select>
             </div>
         
         <button type="submit" class="btn btn-primary">Enviar</button>

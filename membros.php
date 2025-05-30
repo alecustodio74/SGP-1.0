@@ -51,7 +51,7 @@ require_once("header.php");
         <thead>
             <tr>
                 <th>ID</th>
-                <th>NOME</th><th>EMAIL</th><th>CARGO</th><th style="text-align: center;">AÇÕES</th>
+                <th>NOME</th><th>EMAIL</th><th>CARGO</th><th>SALÁRIO</th><th style="text-align: center;">AÇÕES</th>
             </tr>
         </thead>
         <tbody>
@@ -63,6 +63,7 @@ require_once("header.php");
                     <td><?= $m['nome'] ?></td>
                     <td><?= $m['email'] ?></td>
                     <td><?= $m['cargo'] ?></td>
+                    <td><?= $m['salario'] ?></td>
                     <td  style="text-align: center;">
                         <a href="editar_membros.php?id=<?= $m['id'] ?>" class="btn btn-warning">Editar</a>
                         <a href="consultar_membros.php?id=<?= $m['id'] ?>" class="btn btn-info">Consultar</a>

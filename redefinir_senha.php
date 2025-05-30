@@ -29,6 +29,7 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
+                    <img src="img/Logo_SGP_dado.png" style="width: 30%; margin: auto;">
                     <div class="card-header">
                         Redefinir sua senha
                     </div>
