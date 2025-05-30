@@ -66,5 +66,6 @@
               }, //este link acima converte o idioma do código js para o Português BR
               });
     </script>
+    <p class="text-center mt-4 mb-3" style="color: #083b6e;">&copy; <?= date("Y") ?> - SGP - Todos os direitos reservados.</p>
 </body> <!-- fecha o body da página principal.php -->
 </html>

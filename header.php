@@ -42,6 +42,7 @@ session_start();
                 <li><a class="dropdown-item" href="membros.php">Membros</a></li>
                 <li><a class="dropdown-item" href="projetos.php">Projetos</a></li>
                 <li><a class="dropdown-item" href="tarefas.php">Tarefas</a></li>
+                <li><a class="dropdown-item" href="cargos.php">Cargos</a></li>
               </ul>
             </li>
           </ul>

@@ -23,9 +23,9 @@ require_once("header.php");
     <a href="novo_cliente.php" class="btn btn-success mb-3">Novo Registro</a>
 
     <?php
-        if (isset($_GET['clientes']) && $_GET['clientes'] == true){
+        if (isset($_GET['cadastro']) && $_GET['cadastro'] == true){
             echo '<p class="text-success">Registro salvo com sucesso!</p>';
-        } else if (isset($_GET['clientes']) && $_GET['clientes'] == false){
+        } else if (isset($_GET['cadastro']) && $_GET['cadastro'] == false){
             echo '<p class="text-danger">Erro ao inserir o registro!</p>';
         }
     ?>

@@ -94,7 +94,7 @@
                     
                     <div class="lgpd">
                         <input type="checkbox" id="lgpd" name="lgpd" class="form-check-input" required="">
-                        <label for="lgpd" class="form-check-label">Ao submeter esse formulário, declaro que li e entendi que o tratamento de dados pessoais será realizado nos termos da Política de Privacidade do SGP</label>
+                        <label for="lgpd" class="form-check-label">Ao submeter esse formulário, <a href="concordo.php">declaro que li e entendi</a> que o tratamento de dados pessoais será realizado nos termos da Política de Privacidade do SGP.</label>
                     </div>               
             </div>
             <button type="submit" class="btn btn-primary" id="btnNovoUsuario">Cadastrar</button>
@@ -102,6 +102,3 @@
        
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>     
 
-<?php
-  require_once("footer.php"); //chama o rodapé da página com o script
-?>

@@ -7,10 +7,11 @@ Novo usuário (novo_usuario.php) - ok
 Corrigir: Sweet Alert está aparecendo com cadastro ok mesmo se não foi selecionado o ckeck do LGPD, porém não cadastra e não vai para a página de login.
 
 Cadastro
-- Clientes (id, nome)
-- Colaboradores (id, nome, email, cargo)
+- Clientes (id, nome) - ok
+- Colaboradores (id, nome, email, cargo) - ok
 - Projetos (id, nome, preço) Ex: Home Page, Site, Portal, Sistema, Aplicativo .NET, App Móvel
 - Tarefas (id, nome) Ex: Escrever o HTML, Inserir CSS, Criar Funções Javascript, Programar PHP, Programar C#, Criar Banco de Dados
+- Cargos (id, nome, descrição) - ok
 
 Atividades (será uma página sobre os projetos e tarefas em andamento - em tempo "real")
 - Projetos em andamento (id, nome, id do projeto, id do desenvolvedor, nome do desenvolvedor, id do cliente, nome do cliente, tarefa em andamento, data início, data fim)
@@ -32,7 +33,7 @@ Rodapé (footer.php) - ok
 Alterar Dados (alterar_dados.php) - melhorar para dados e senha serem modificados em páginas diferentes
 Sair (sair.php) - ok
 
-Redefinição de senha: ver arquivo redefinir_senha.txt
+Redefinição de senha: ver arquivo redefinir_senha.txt - ok
 
 Banco de dados: projetophp (em andamento)
 

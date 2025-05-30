@@ -1,12 +1,8 @@
 <?php
-// sobre.php
-// Página Sobre o Projeto Home Banking
-
-// Inclui o cabeçalho padrão
-require_once("header.php");
+    require_once("header.php");
 ?>
 
-<div class="container mt-5">
+<div class="container mt-4" style="width: 70%;">
     <h2 class="text-center mb-4">Sobre o Sistema de Gerenciamento de Projetos 1.0</h2>
 
     <div class="card shadow-lg">
@@ -80,6 +76,5 @@ require_once("header.php");
 </style>
 
 <?php
-// Inclui o rodapé padrão
 require_once("footer.php");
 ?>
