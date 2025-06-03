@@ -1,47 +1,66 @@
 <?php
-    require_once("header.php");
+require_once("header.php");
+
+function retornaProjetos(){
+  require("conexao.php");
+  try{
+    $sql = "SELECT * FROM projetos"; // Consulta todos os projetos
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  } catch (Exception $e){
+    die("Erro ao consultar os projetos: " . $e->getMessage());
+  }
+}
+
+$projetos = retornaProjetos();
 ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Projetos</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Cadastro de Projetos</h1>
-    <form action="projetos.php" method="POST">
-        <label for="nome">Nome do Projeto:</label>
-        <input type="text" id="nome" name="nome" required>
+<title>Projetos</title>
 
-        <label for="descricao">Descrição:</label>
-        <textarea id="descricao" name="descricao"></textarea>
+<h4>Projetos</h4>
+<a href="novo_projeto.php" class="btn btn-success mb-3">Novo Projeto</a>
 
-        <label for="data_inicio">Data de Início:</label>
-        <input type="date" id="data_inicio" name="data_inicio" required>
+<?php
+if (isset($_GET['cadastro']) && $_GET['cadastro'] == true){
+  echo '<p class="text-success">Projeto cadastrado com sucesso!</p>';
+} else if (isset($_GET['cadastro']) && $_GET['cadastro'] == false){
+  echo '<p class="text-danger">Erro ao cadastrar o projeto!</p>';
+}
 
-        <label for="data_fim">Data de Término:</label>
-        <input type="date" id="data_fim" name="data_fim">
+if (isset($_GET['alterado']) && $_GET['alterado'] == true){
+  echo '<p class="text-success">Projeto alterado com sucesso!</p>';
+} else if (isset($_GET['alterado']) && $_GET['alterado'] == false){
+  echo '<p class="text-danger">Erro ao alterar o projeto!</p>';
+}
 
-        <button type="submit">Cadastrar Projeto</button>
-    </form>
+if (isset($_GET['excluido']) && $_GET['excluido'] == true){
+  echo '<p class="text-success">Projeto excluído com sucesso!</p>';
+} else if (isset($_GET['excluido']) && $_GET['excluido'] == false){
+  echo '<p class="text-danger">Erro ao excluir o projeto!</p>';
+}
+?>
 
-    <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        require 'conexao.php';
-
-        $nome = $_POST['nome'];
-        $descricao = $_POST['descricao'];
-        $data_inicio = $_POST['data_inicio'];
-        $data_fim = $_POST['data_fim'];
-
-        $sql = "INSERT INTO projetos (nome, descricao, data_inicio, data_fim) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$nome, $descricao, $data_inicio, $data_fim]);
-
-        echo "Projeto cadastrado com sucesso!";
-    }
-    ?>
+<table class="table table-hover table-striped" id="tabela">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>NOME DO PROJETO</th>
+            <th style="text-align: center;">AÇÕES</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($projetos as $p): ?>
+            <tr>
+                <td><?= $p['id'] ?></td>
+                <td><?= $p['nome'] ?></td>
+                <td style="text-align: center;">
+                    <a href="editar_projetos.php?id=<?= $p['id'] ?>" class="btn btn-warning">Editar</a>
+                    <a href="consultar_projetos.php?id=<?= $p['id'] ?>" class="btn btn-info">Consultar</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
 <?php
     require_once("footer.php");

@@ -11,7 +11,7 @@ require_once("header.php"); //chama o cabeçalho da página
   </head>
       
     <figure>
-        <img src="https://kinsta.com/wp-content/uploads/2022/09/computer-and-code-used-by-developers.jpg" alt="Imagem de um computador de um desenvolvedor" style="width: 50%; margin: auto; margin-top: 10%; display: flex; border-radius: 2%;">
+        <img src="img/Logo_SGP_dado.png" alt="Imagem de um computador de um desenvolvedor" style="width: 45%; margin: auto; display: flex;">
    </figure>
 
     <!-- o arquivo termina o código html no footer.php -->

@@ -27,7 +27,7 @@ session_start();
 <body>   
     <nav class="navbar  navbar-expand-lg navbar-dark" style="background-color: #083b6e;">
       <div class="container-fluid">
-        <a class="navbar-brand" href="principal.php"> <img src="img/Logo_SGP_dado.png" style="width: 5%; padding: 0; ">Sistema de Gerenciamento de Projetos 1.0</a>
+        <a class="navbar-brand" href="principal.php"><img src="img/Logo_SGP_dado.png" style="width: 5%; padding: 0; ">Sistema de Gerenciamento de Projetos 1.0</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -53,13 +53,10 @@ session_start();
               <a class="nav-link" href="atividades.php">Atividades</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="produtos.php">Produtos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="categorias.php">Categorias</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="dashboard.php">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="relatorio.php">Relatório</a>
             </li>
           </ul>
            

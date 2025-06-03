@@ -1,57 +1,70 @@
-
 <?php
     require_once("header.php");
+
+function retornaTarefas(){
+    require("conexao.php");
+    try {
+        $sql = "SELECT * FROM tarefas ORDER BY id DESC";
+        $stmt = $pdo->query($sql);
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        die("Erro ao consultar as tarefas: " . $e->getMessage());
+    }
+}
+
+$tarefas = retornaTarefas();
 ?>
 
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Tarefas</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Tarefas</title>
 </head>
-<body>
-    <h1>Cadastro de Tarefas</h1>
-    <form action="tarefas.php" method="POST">
-        <label for="titulo">Título da Tarefa:</label>
-        <input type="text" id="titulo" name="titulo" required>
 
-        <label for="descricao">Descrição:</label>
-        <textarea id="descricao" name="descricao"></textarea>
+<h4>Tarefas</h4>
+<a href="nova_tarefa.php" class="btn btn-success mb-3">Nova Tarefa</a>
 
-        <label for="status">Status:</label>
-        <select id="status" name="status">
-            <option value="Pendente">Pendente</option>
-            <option value="Em andamento">Em andamento</option>
-            <option value="Concluído">Concluído</option>
-        </select>
-
-        <label for="data_inicio">Data de Início:</label>
-        <input type="date" id="data_inicio" name="data_inicio" required>
-
-        <label for="data_fim">Data de Término:</label>
-        <input type="date" id="data_fim" name="data_fim">
-
-        <button type="submit">Cadastrar Tarefa</button>
-    </form>
-
-    <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        require 'conexao.php';
-
-        $titulo = $_POST['titulo'];
-        $descricao = $_POST['descricao'];
-        $status = $_POST['status'];
-        $data_inicio = $_POST['data_inicio'];
-        $data_fim = $_POST['data_fim'];
-
-        $sql = "INSERT INTO tarefas (titulo, descricao, status, data_inicio, data_fim) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$titulo, $descricao, $status, $data_inicio, $data_fim]);
-
-        echo "Tarefa cadastrada com sucesso!";
+<?php
+    if (isset($_GET['cadastro']) && $_GET['cadastro'] == "true") {
+        echo '<p class="text-success">Tarefa cadastrada com sucesso!</p>';
+    } else if (isset($_GET['cadastro']) && $_GET['cadastro'] == "false") {
+        echo '<p class="text-danger">Erro ao cadastrar a tarefa!</p>';
     }
-    ?>
+
+    if (isset($_GET['alterado']) && $_GET['alterado'] == "true") {
+        echo '<p class="text-success">Tarefa alterada com sucesso!</p>';
+    } else if (isset($_GET['alterado']) && $_GET['alterado'] == "false") {
+        echo '<p class="text-danger">Erro ao alterar a tarefa!</p>';
+    }
+
+    if (isset($_GET['excluido']) && $_GET['excluido'] == "true") {
+        echo '<p class="text-success">Tarefa excluída com sucesso!</p>';
+    } else if (isset($_GET['excluido']) && $_GET['excluido'] == "false") {
+        echo '<p class="text-danger">Erro ao excluir a tarefa!</p>';
+    }
+?>
+
+<table class="table table-hover table-striped" id="tabela">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>NOME DA TAREFA</th>
+            <th>DESCRIÇÃO</th>
+            <th style="text-align: center;">AÇÕES</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($tarefas as $t): ?>
+            <tr>
+                <td><?= $t['id'] ?></td>
+                <td><?= htmlspecialchars($t['nome']) ?></td>
+                <td><?= htmlspecialchars($t['descricao']) ?></td>
+                <td style="text-align: center;">
+                    <a href="editar_tarefas.php?id=<?= $t['id'] ?>" class="btn btn-warning">Editar</a>
+                    <a href="consultar_tarefas.php?id=<?= $t['id'] ?>" class="btn btn-info">Consultar</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
 <?php
     require_once("footer.php");

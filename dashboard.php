@@ -1,66 +1,82 @@
-<?php
-    require_once("header.php");
-?>
+<?php require_once("header.php"); ?>
 
 <?php
-    function retornaProdutos(){
+function retornaUsuarios() {
     require("conexao.php");
-    try{
-        //$sql = "SELECT * FROM produto";
-        $sql = "SELECT p.*, c.nome as nome_categoria FROM produto p INNER JOIN categoria c ON c.id = p.categoria_id"; 
-        //08/05/2025 buscando o produto pelo nome da categoria
-        //INNER JOIN: vou pegar todos os dados de uma categoria, especificamente o nome da categoria
-        // antes estávamos exibindo apenas o id da categoria
+    try {
+        $sql = "SELECT nome, salario FROM usuarios WHERE salario IS NOT NULL";
         $stmt = $pdo->query($sql);
-        return $stmt->fetchAll(); //retorna todos os dados do banco
-    }catch (Exception $e){
-        die("Erro ao consultar os produtos: " . $e->getMessage());
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        die("Erro ao consultar os usuários: " . $e->getMessage());
     }
-  }
+}
 
-  $produtos = retornaProdutos();
+$usuarios = retornaUsuarios();
 ?>
+<title>Dashboard Colaboradores</title>
+<h4>Salários dos Colaboradores</h4>
 
-<h2>Dashboard</h2>
-<a href="relatorio.php" class="btn btn-success mb-3" target="_blank">Relatório de Produtos</a>
+<?php if (count($usuarios) === 0): ?>
+    <div class="alert alert-warning">Nenhum usuário com salário encontrado.</div>
+<?php else: ?>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<!-- gstatc é a biblioteca do google que contém os tipos de gráfico -->
-    <div id="chart_div"></div>
+    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+
     <script>
-    google.charts.load('current', {packages: ['corechart', 'bar']});
-    google.charts.setOnLoadCallback(drawBasic); //carrega os gráficos do google
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
 
-    function drawBasic() {
+    function drawChart() {
+        const data = new google.visualization.DataTable();
+        data.addColumn('string', 'Usuário');
+        data.addColumn('number', 'Salário');
+        data.addColumn({ type: 'string', role: 'annotation' }); // valor visível dentro da barra
+        data.addColumn({ type: 'string', role: 'style' }); // cor da barra
 
-    var data = google.visualization.arrayToDataTable([
-        ['Produto', 'Preço'],
-          <?php
-                foreach($produtos as $p){
-                    $nome = $p['nome'];
-                    $preco = $p['preco'];
-                    echo "['$nome', $preco],";
-                }
+        const rows = [
+            <?php
+            $cores = ['#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395'];
+            $i = 0;
+            foreach ($usuarios as $u):
+                $nome = addslashes($u['nome']);
+                $salario = (float) $u['salario'];
+                $salarioFormatado = 'R$ ' . number_format($salario, 2, ',', '.');
+                $cor = $cores[$i % count($cores)];
+                echo "['$nome', $salario, '$salarioFormatado', 'color: $cor'],\n";
+                $i++;
+            endforeach;
             ?>
-    ]);
+        ];
 
-    var options = {
-        title: 'Preço dos produtos',
-        chartArea: {width: '50%', height: '60%'},
-        hAxis: { //hAxix é o eixo horizontal
-        title: 'Preço',
-        minValue: 0
-    },
-    vAxis: { //vAxis é o eixo vertical
-        title: 'Nome do Produto'
-        }
-    };
+        data.addRows(rows);
 
-    var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        const options = {
+            title: 'Salários dos Colaboradores',
+            legend: 'none',
+            chartArea: { width: '60%', height: '70%' },
+            hAxis: {
+                title: 'Salários',
+                minValue: 0
+            },
+            vAxis: {
+                title: 'Colaboradores'
+            },
+            annotations: {
+                textStyle: {
+                    fontSize: 12,
+                    color: '#fff', // branco para melhor contraste dentro da barra
+                    auraColor: 'none'
+                }
+            }
+        };
 
-    chart.draw(data, options);
+        const chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
     }
     </script>
 
-<?php
-    require_once("footer.php");
+<?php endif; ?>
+
+<?php require_once("footer.php"); ?>

@@ -18,7 +18,7 @@ function retornaMembros(){
 $membros = retornaMembros();
 ?>
 
-<h4>Membros</h4>
+<h4>Colaboradores</h4>
 <a href="novo_membro.php" class="btn btn-success mb-3">Novo Registro</a>
 
 <?php
