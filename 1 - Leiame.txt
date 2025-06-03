@@ -2,10 +2,12 @@ Sistema de Gestão de Projetos
 Versão 1.0
 Desenvolvedor: Alexandre Ricardo Custódio de Souza
 Data inicial: 27/03/2025
+Data final: 03/06/2025
 
 Disciplina: Eletiva Linguagem de Programação IV
+Professora Vanessa dos Anjos Borges
 
-17.Sistema de Gestão de Projetos
+Tema 17: Sistema de Gestão de Projetos
 
 o Escopo: Gerenciamento de projetos de uma equipe.
 o RF1: CRUD para cadastro de projetos.
