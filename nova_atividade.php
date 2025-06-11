@@ -1,12 +1,13 @@
 <?php
 require_once("header.php");
 
-function inserirAtividade($projeto_id, $tarefa_id, $usuario_id, $status, $cliente_id){
+function inserirAtividade($projeto_id, $tarefa_id, $usuario_id, $data_inicio, $status, $cliente_id) {
     require("conexao.php");
     try {
-        $sql = "INSERT INTO atividades (projeto_id, tarefa_id, usuario_id, status, cliente_id) VALUES (?, ?, ?, ?, ?)";
+        $data_formatada = DateTime::createFromFormat('d/m/Y', $data_inicio)->format('Y-m-d');
+        $sql = "INSERT INTO atividades (projeto_id, tarefa_id, usuario_id, data_inicio, status, cliente_id) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-        if ($stmt->execute([$projeto_id, $tarefa_id, $usuario_id, $status, $cliente_id])){
+        if ($stmt->execute([$projeto_id, $tarefa_id, $usuario_id, $data_formatada, $status, $cliente_id])) {
             header('Location: atividades.php?cadastro=true');
             exit;
         } else {
@@ -17,25 +18,25 @@ function inserirAtividade($projeto_id, $tarefa_id, $usuario_id, $status, $client
     }
 }
 
-function listarProjetos(){
+function listarProjetos() {
     require("conexao.php");
     $stmt = $pdo->query("SELECT id, nome FROM projetos ORDER BY nome");
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function listarTarefas(){
+function listarTarefas() {
     require("conexao.php");
     $stmt = $pdo->query("SELECT id, nome FROM tarefas ORDER BY nome");
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function listarUsuarios(){
+function listarUsuarios() {
     require("conexao.php");
     $stmt = $pdo->query("SELECT id, nome FROM usuarios ORDER BY nome");
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function listarClientes(){
+function listarClientes() {
     require("conexao.php");
     $stmt = $pdo->query("SELECT id, nome FROM clientes ORDER BY nome");
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -50,10 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $projeto_id = $_POST['projeto_id'];
     $tarefa_id = $_POST['tarefa_id'];
     $usuario_id = $_POST['usuario_id'];
-    $status = $_POST['status'];
+    $data_inicio = $_POST['data_inicio'];
+    $status = $_POST['status']; // "Em andamento"
     $cliente_id = $_POST['cliente_id'];
 
-    inserirAtividade($projeto_id, $tarefa_id, $usuario_id, $status, $cliente_id);
+    inserirAtividade($projeto_id, $tarefa_id, $usuario_id, $data_inicio, $status, $cliente_id);
 }
 ?>
 
@@ -101,18 +103,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <div class="mb-3">
-        <label for="status" class="form-label">Status</label>
-        <select id="status" name="status" class="form-control" required>
-            <option value="">-- Selecione o status --</option>
-            <option value="Concluído">Concluído</option>
-            <option value="Em andamento">Em andamento</option>
-            <option value="Parado">Parado</option>
-        </select>
+        <label for="data_inicio" class="form-label">Data de Início</label>
+        <input type="text" id="data_inicio" name="data_inicio" class="form-control" value="<?= date('d/m/Y') ?>" required>
     </div>
+
+    <!-- Campo oculto para status -->
+    <input type="hidden" name="status" value="Em andamento">
 
     <button type="submit" class="btn btn-primary">Cadastrar</button>
     <button type="button" class="btn btn-secondary" onclick="location.href='atividades.php'">Voltar</button>
 </form>
+
+<script>
+    // Máscara de data (dd/mm/aaaa)
+    document.getElementById('data_inicio').addEventListener('input', function(e) {
+        let v = e.target.value.replace(/\D/g, '').slice(0, 8);
+        if (v.length >= 5)
+            e.target.value = v.replace(/(\d{2})(\d{2})(\d{0,4})/, '$1/$2/$3');
+        else if (v.length >= 3)
+            e.target.value = v.replace(/(\d{2})(\d{0,2})/, '$1/$2');
+        else
+            e.target.value = v;
+    });
+</script>
 
 <?php
 require_once("footer.php");

@@ -1,22 +1,41 @@
 <?php
 require_once("header.php");
 
-function calcularStatus($data_inicio, $data_fim) {
+function calcularStatus($data_tarefa, $data_inicio, $data_fim) {
     $hoje = new DateTime();
+    $tarefa = $data_tarefa ? new DateTime($data_tarefa) : null;
     $inicio = $data_inicio ? new DateTime($data_inicio) : null;
     $fim = $data_fim ? new DateTime($data_fim) : null;
 
-    if ($inicio && $fim) {
+    if ($fim) {
         return 'Concluído';
-    } elseif ($inicio && !$fim) {
-        $dias = $inicio->diff($hoje)->days;
-        return $dias > 30 ? 'Parado' : 'Em andamento';
     }
+
+    if ($inicio && !$tarefa) {
+        // Se data_inicio preenchida e data_tarefa vazia
+        $diff = $inicio->diff($hoje)->days;
+        return $diff > 30 ? 'Parado' : 'Em andamento';
+    }
+
+    if ($inicio && $tarefa) {
+        $diff_tarefa_hoje = $tarefa->diff($hoje)->days;
+        $diff_tarefa_inicio = $inicio->diff($tarefa)->days;
+
+        if ($diff_tarefa_hoje > 30) {
+            return 'Parado';
+        }
+        if ($diff_tarefa_inicio > 30 && $diff_tarefa_hoje <= 30) {
+            return 'Em andamento';
+        }
+        return 'Em andamento';
+    }
+
+    // Caso apenas data_tarefa esteja preenchida ou tudo esteja vazio
     return 'Desconhecido';
 }
 
-function calcularStatusCor($data_inicio, $data_fim) {
-    $status = calcularStatus($data_inicio, $data_fim);
+function calcularStatusCor($data_tarefa, $data_inicio, $data_fim) {
+    $status = calcularStatus($data_tarefa, $data_inicio, $data_fim);
     $cores = [
         'Concluído' => 'success',
         'Em andamento' => 'warning',
@@ -32,6 +51,7 @@ function retornaAtividades() {
         $sql = "SELECT a.*, 
                        p.nome AS nome_projeto, 
                        t.nome AS nome_tarefa, 
+                       a.data_tarefa,
                        u.nome AS nome_usuario, 
                        c.nome AS nome_cliente
                 FROM atividades a
@@ -65,12 +85,12 @@ $atividades = retornaAtividades();
     text-align: center;
     vertical-align: middle;
 }
-.badge{
-    width: 95px; /* largura fixa igual ou próxima da largura do btn-sm */
-    height: 30px; /* mesma altura do btn-sm */
+.badge {
+    width: 95px;
+    height: 30px;
     padding: 0;
     line-height: 30px;
-    text-align: center; 
+    text-align: center;
 }
 </style>
 
@@ -96,7 +116,7 @@ $atividades = retornaAtividades();
     </thead>
     <tbody>
         <?php foreach ($atividades as $a): ?>
-            <?php list($status, $cor) = calcularStatusCor($a['data_inicio'], $a['data_fim']); ?>
+            <?php list($status, $cor) = calcularStatusCor($a['data_tarefa'], $a['data_inicio'], $a['data_fim']); ?>
             <tr>
                 <td><?= $a['id'] ?></td>
                 <td><?= htmlspecialchars($a['nome_projeto']) ?></td>
@@ -111,8 +131,9 @@ $atividades = retornaAtividades();
                     </button>
                     <div class="mt-2 detalhes d-none">
                         <small>Cliente: <strong><?= htmlspecialchars($a['nome_cliente']) ?></strong></small><br>
-                        <small>Início: <strong><?= formatarDataBR($a['data_inicio'])?: 'N/A' ?></strong></small><br>
-                        <small>Fim: <strong><?= formatarDataBR($a['data_fim']) ?: 'N/A' ?></strong></small>
+                        <small>Início: <strong><?= formatarDataBR($a['data_inicio']) ?></strong></small><br>
+                        <small>Modificado: <strong><?= formatarDataBR($a['data_tarefa']) ?></strong></small><br>
+                        <small>Concluído: <strong><?= formatarDataBR($a['data_fim']) ?></strong></small>
                     </div>
                 </td>
                 <td style="text-align: center;">
@@ -125,12 +146,10 @@ $atividades = retornaAtividades();
 </table>
 
 <script>
-    function mostrarDetalhes(botao) {
-        const div = botao.nextElementSibling;
-        div.classList.toggle('d-none');
-    }
+function mostrarDetalhes(botao) {
+    const div = botao.nextElementSibling;
+    div.classList.toggle('d-none');
+}
 </script>
 
-<?php
-require_once("footer.php");
-?>
+<?php require_once("footer.php"); ?>
