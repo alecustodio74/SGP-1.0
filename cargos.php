@@ -2,7 +2,6 @@
 require_once("header.php"); //chama o cabeçalho da página
 //require_once é mais seguro que o include pois se der erro com o include_once, 
 // ele continua a rodar a página mesmo mostrando os erros
-  //session_start(); aqui comentado pq inicializei a sessão lá no topo
   
   function retornaCargos(){
     require("conexao.php");

@@ -138,7 +138,6 @@ $atividades = retornaAtividades();
                 </td>
                 <td style="text-align: center;">
                     <a href="editar_atividade.php?id=<?= $a['id'] ?>" class="btn btn-warning">Editar</a>
-                    <a href="consultar_atividades.php?id=<?= $a['id'] ?>" class="btn btn-info">Consultar</a>
                 </td>
             </tr>
         <?php endforeach ?>
