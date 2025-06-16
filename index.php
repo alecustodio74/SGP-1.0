@@ -1,6 +1,5 @@
 <?php
-require_once('conexao.php'); //inicia conexao com o banco de dados.
-//o dbname=projetophp que declaramos no conexao.php
+require_once('conexao.php'); //inicia conexao com o banco de dados: dbname=sgp
 
     if ($_SERVER['REQUEST_METHOD'] == "POST"){
         try{
@@ -12,11 +11,10 @@ require_once('conexao.php'); //inicia conexao com o banco de dados.
                 $usuario = $stmt->fetch(PDO::FETCH_ASSOC); //variável que recebe todos os dados do SELECT
                     if ($usuario && password_verify($senha, $usuario['senha'])){
                     session_start();
-                    //$_SESSION['usuario'] = $email;
                     $_SESSION['usuario'] = $usuario['nome'];
                     $_SESSION['acesso'] = true;
-                    $_SESSION['id'] = $usuario['id']; //incluido em 03/04/2025
-                    header('location: principal.php'); //muda o cabeçalho da resposta, como redirecionar para outra página.
+                    $_SESSION['id'] = $usuario['id'];
+                    header('location: principal.php'); //redireciona para outra página.
                 }else{
                     $mensagem['erro'] = "Usuário e/ou senha incorretos!";
                 }
@@ -49,8 +47,7 @@ require_once('conexao.php'); //inicia conexao com o banco de dados.
     </div>
     <?php endif; ?>
 
-
-     <?php //Para exibir a mensagem de primeiro login após se cadastrar
+     <?php //Para exibir a mensagem login após alterar o cadastro de usuário
     if ((isset($_GET['alterado'])) && ($_GET['alterado'] == "true")): ?>
     <div class="alert alert-success mt-3 mb-3">
         Alteração realizada com sucesso. Faça login novamente!

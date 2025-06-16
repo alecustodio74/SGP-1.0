@@ -1,3 +1,8 @@
+<?php
+  require_once 'header.php';
+?>
+  
+
 </main> <!-- fecha o main iniciado na página header.php-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
@@ -69,3 +74,4 @@
     <p class="text-center mt-4 mb-3" style="color: #083b6e;">&copy; <?= date("Y") ?> - SGP - Todos os direitos reservados.</p>
 </body> <!-- fecha o body da página principal.php -->
 </html>
+

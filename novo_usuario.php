@@ -14,7 +14,8 @@
                 $mensagem['erro'] = "Email já existe no sistema. Cadastre-se com outro e-mail ! ";
             } else {
                 if ($senha === $confirmaSenha){
-                    $senha = password_hash($_POST['senha'], PASSWORD_BCRYPT); //Criptografando a senha de usuário
+                    $senha = password_hash($_POST['senha'], PASSWORD_BCRYPT); 
+                    //Criptografando a senha de usuário
                     $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
                     //para conferir as senhas
                     //$stmt prepara o sql para inserir os dados
@@ -89,16 +90,15 @@
                     <label for="confirmaSenha" class="form-label">Confirme a sua senha:</label>
                     <input type="password" id="confirmaSenha" name="confirmaSenha" class="form-control" maxlength="15" placeholder="Máximo de 15 caracteres" required="">
                 </div>
-                <!-- 02/05/2025 Implementado a confirmação da senha ao realizar novo cadastro -->
-                <div class="input-group">
-                    
+                <!-- Confirmara senha ao realizar novo cadastro -->
+                <div class="input-group">    
                     <div class="lgpd">
                         <input type="checkbox" id="lgpd" name="lgpd" class="form-check-input" required="">
                         <label for="lgpd" class="form-check-label">Ao submeter esse formulário, <a href="concordo.php">declaro que li e entendi</a> que o tratamento de dados pessoais será realizado nos termos da Política de Privacidade do SGP.</label>
-                    </div>               
-            </div>
-            <button type="submit" class="btn btn-primary" id="btnNovoUsuario">Cadastrar</button>
-        </form>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btnNovoUsuario">Cadastrar</button>
+            </form>
        
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>     
 

@@ -1,8 +1,6 @@
 <?php
     declare(strict_types=1);
 
-    // $dominio: variável que recebe o string de conexão (é um padrão do PHP para
-    //conexão com qualquer gerenciador de banco de dados)
     $dominio = 'mysql:host=localhost;dbname=sgp'; 
     $usuario = 'root';
     $senha = '123456'; //usuario e senha no MySQL Workbank ou outro banco como o Xampp
