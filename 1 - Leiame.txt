@@ -15,3 +15,6 @@ o RF2: CRUD para cadastro de membros.
 o RF3: CRUD para cadastro de tarefas.
 o RF4: Registrar atividades, relacionando projetos, membros e tarefas (informar também
        a data de início e a data prevista de término).
+
+Implementei 6 CRUDS
+Vídeo explicativo https://www.youtube.com/watch?v=jSOEWJAEt4Y
